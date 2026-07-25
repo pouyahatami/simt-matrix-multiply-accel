@@ -1,0 +1,56 @@
+# ── ModelSim / QuestaSim build artifacts ──────────────────────────
+work/
+altera_mf/
+*.mpf
+*.cr.mti
+*.wlf
+wlf*
+*.vcd
+*.qdb
+*.qpg
+*.qtl
+_vmake
+_info
+transcript
+modelsim.ini
+
+# ── Backup files ───────────────────────────────────────────────────
+*.bak
+*.orig
+
+# ── Quartus build artifacts ────────────────────────────────────────
+db/
+incremental_db/
+output_files/
+*.qsf.bak
+*.rpt
+*.smsg
+*.summary
+*.pin
+*.sof
+*.pof
+*.jdi
+*.sld
+*.eda
+
+# ── Quartus MIF verification files (auto-generated) ───────────────
+*.ver
+
+# ── IDE artifacts ──────────────────────────────────────────────────
+.out-of-code-insights/
+.vscode/
+*.swp
+*~
+
+# ── OS artifacts ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Quartus IP stubs in testbench dirs (not part of simulation flow) ──
+MATRIX_*.v
+
+# ── Archived / dead code ────────────────────────────────────────────
+# Old v1 source tree, rejected mem_controller/gpu_mem_master designs, and
+# the abandoned SDRAM Qsys exploration. Kept on disk for reference, not
+# tracked or compiled by any current build/sim script.
+archives/

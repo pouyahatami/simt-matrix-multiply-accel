@@ -1,0 +1,6 @@
+QUARTUS_VERSION = "16.1"
+DATE = "21:00:00  June 21, 2026"
+
+# Revisions
+
+PROJECT_REVISION = "DE1_SoC_GPU"

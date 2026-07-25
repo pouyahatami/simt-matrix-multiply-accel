@@ -1,0 +1,58 @@
+-- matrix_ab.mif
+-- Combined preload for the shared matrix_ab dual-port BRAM (DE1-SoC hardware
+-- build). One 256-word x 16-bit block holds BOTH input matrices at disjoint
+-- offsets, addressed independently through port A (matrix A) and port B
+-- (matrix B) of the same underlying altsyncram array:
+--   words [0  .. N*N-1]      -> matrix A   (base_addr_A = 0)
+--   words [N*N .. 2*N*N-1]   -> matrix B   (base_addr_B = N*N)
+--
+-- Values below match the 4x4 test vectors used in tb/Top/gpu_top_tb.sv
+-- (A[i] = B[i] = i+1 for i = 0..15) so a hardware run is directly comparable
+-- to the passing simulation result. Regenerate this file if N_MAT or the
+-- test data changes.
+
+WIDTH=16;
+DEPTH=256;
+
+ADDRESS_RADIX=UNS;
+DATA_RADIX=HEX;
+
+CONTENT BEGIN
+    -- matrix A: words 0..15
+    0  : 0001;
+    1  : 0002;
+    2  : 0003;
+    3  : 0004;
+    4  : 0005;
+    5  : 0006;
+    6  : 0007;
+    7  : 0008;
+    8  : 0009;
+    9  : 000A;
+    10 : 000B;
+    11 : 000C;
+    12 : 000D;
+    13 : 000E;
+    14 : 000F;
+    15 : 0010;
+
+    -- matrix B: words 16..31
+    16 : 0001;
+    17 : 0002;
+    18 : 0003;
+    19 : 0004;
+    20 : 0005;
+    21 : 0006;
+    22 : 0007;
+    23 : 0008;
+    24 : 0009;
+    25 : 000A;
+    26 : 000B;
+    27 : 000C;
+    28 : 000D;
+    29 : 000E;
+    30 : 000F;
+    31 : 0010;
+
+    [32..255] : 0000;
+END;
