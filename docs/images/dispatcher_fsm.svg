@@ -99,7 +99,7 @@
   <text x="686" y="310" class="fixBody">Same-cycle done and</text>
   <text x="686" y="328" class="fixBody">handshake used to keep</text>
   <text x="686" y="346" class="fixBody">the core marked busy</text>
-  <text x="686" y="364" class="fixBody">forever &mdash; fixed by (3) above.</text>
+  <text x="686" y="364" class="fixBody">forever — fixed by (3) above.</text>
 
   <!-- FINISH -> note box (down then to fix) -->
   <path class="edge" d="M770,160 C770,220 770,220 660,300" />

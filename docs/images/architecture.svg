@@ -77,7 +77,7 @@
   <path class="edge" d="M415,172 L375,218"/>
   <path class="edge" d="M415,172 L485,218"/>
   <path class="edge" d="M415,172 L595,218"/>
-  <text x="430" y="200" text-anchor="middle" class="label">valid &middot; start &middot; ready &middot; done</text>
+  <text x="430" y="200" text-anchor="middle" class="label">valid · start · ready · done</text>
 
   <!-- Arbiters -->
   <rect class="node" x="215" y="308" width="150" height="40" rx="6"/>
@@ -110,5 +110,5 @@
 
   <!-- Board I/O -> Dispatcher -->
   <path class="edge" d="M162,150 L318,142"/>
-  <text x="240" y="134" text-anchor="middle" class="label">clk &middot; rst &middot; start &middot; done</text>
+  <text x="240" y="134" text-anchor="middle" class="label">clk · rst · start · done</text>
 </svg>
