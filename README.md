@@ -16,6 +16,7 @@ No vendor IP — all RTL hand-written and verified in ModelSim ASE.
 - [Dispatcher](#dispatcher)
 - [Scheduler](#scheduler)
 - [Arbiters](#arbiters)
+- [Hardware Verification](#hardware-verification)
 - [Running Simulations](#running-simulations)
 - [Roadmap](#roadmap)
 
@@ -33,7 +34,7 @@ The two Quartus memory IPs (`matrix_ab`, `matrix_c`) are instantiated outside `g
 
 ## Dispatcher
 
-![Dispatcher FSM](docs/images/dispatcher_fsm.png)
+![Dispatcher FSM](docs/images/dispatcher_fsm.svg)
 
 `dispatcher.sv` manages a pool of cores with a 3-state FSM. The interesting challenge is avoiding races during re-dispatch.
 
@@ -77,6 +78,19 @@ The two Quartus memory IPs (`matrix_ab`, `matrix_c`) are instantiated outside `g
 | `matrix_ab` altsyncram IP (hardware) | `2` | Registered address **and** registered output |
 
 `de1soc_top` overrides to `BRAM_READ_LATENCY=2`. Without this, every core read one grant early, producing a systematic corruption across all of matrix C — visible on hardware but invisible in simulation until a hardware-accurate testbench was written.
+
+---
+
+## Hardware Verification
+
+Beyond simulation, the design was verified against a golden model directly on
+the DE1-SoC using the Quartus In-System Memory Content Editor to read back
+`matrix_c` live from BRAM:
+
+![Hardware matrix-multiply readback, verified against the golden model](docs/images/hardware_matrix_readback.webp)
+
+Each boxed RAM word maps to one expected `C` value from the 4&times;4
+matrix multiply; all 16 values matched.
 
 ---
 

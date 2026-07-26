@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="-apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrowhead" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+
+  <style>
+    .bg { fill: #ffffff; }
+    .node { fill: #f5f7ff; stroke: #2454ff; stroke-width: 2; }
+    .noteBox { fill: #f5f7ff; stroke: #7c88b8; stroke-width: 1.4; }
+    .fixBox { fill: #fff2f2; stroke: #d64545; stroke-width: 1.4; }
+    .title { font-size: 15px; font-weight: 600; fill: #12234f; }
+    .body { font-size: 12px; fill: #3a4a75; }
+    .code { font-size: 11.5px; fill: #3a4a75; font-family: "SFMono-Regular", Consolas, monospace; }
+    .edge { fill: none; stroke: #2454ff; stroke-width: 1.6; marker-end: url(#arrow); }
+    .dashed { fill: none; stroke: #d64545; stroke-width: 1.4; stroke-dasharray: 4,3; marker-end: url(#arrow-fix); }
+    .arrowhead { fill: #2454ff; }
+    .arrowhead-fix { fill: #d64545; }
+    .label { font-size: 12px; fill: #12234f; }
+    .heading { font-size: 18px; font-weight: 700; fill: #12234f; }
+    .fixTitle { font-size: 13px; font-weight: 700; fill: #a02020; }
+    .fixBody { font-size: 11.5px; fill: #7a2c2c; }
+
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #16181d; }
+      .node { fill: #1c2440; stroke: #7c9bff; }
+      .noteBox { fill: #1c2440; stroke: #8b96c4; }
+      .fixBox { fill: #3a1c1c; stroke: #e08080; }
+      .title { fill: #f0f3ff; }
+      .body { fill: #b7c2ea; }
+      .code { fill: #b7c2ea; }
+      .edge { stroke: #7c9bff; }
+      .dashed { stroke: #e08080; }
+      .arrowhead { fill: #7c9bff; }
+      .arrowhead-fix { fill: #e08080; }
+      .label { fill: #e4e9ff; }
+      .heading { fill: #f0f3ff; }
+      .fixTitle { fill: #ffb0b0; }
+      .fixBody { fill: #f0c0c0; }
+    }
+  </style>
+
+  <defs>
+    <marker id="arrow-fix" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path class="arrowhead-fix" d="M0,0 L10,5 L0,10 z"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="900" height="520"/>
+
+  <text x="24" y="32" class="heading">Dispatcher FSM</text>
+
+  <!-- IDLE -->
+  <rect class="node" x="40" y="70" width="180" height="90" rx="12"/>
+  <text x="130" y="98" text-anchor="middle" class="title">IDLE</text>
+  <text x="130" y="120" text-anchor="middle" class="body">reset FSM outputs</text>
+  <text x="130" y="138" text-anchor="middle" class="body">wait for start</text>
+
+  <!-- RUN -->
+  <rect class="node" x="360" y="70" width="180" height="90" rx="12"/>
+  <text x="450" y="98" text-anchor="middle" class="title">RUN</text>
+  <text x="450" y="120" text-anchor="middle" class="body">dispatch work chunks</text>
+  <text x="450" y="138" text-anchor="middle" class="body">track cores</text>
+
+  <!-- FINISH -->
+  <rect class="node" x="680" y="70" width="180" height="90" rx="12"/>
+  <text x="770" y="98" text-anchor="middle" class="title">FINISH</text>
+  <text x="770" y="120" text-anchor="middle" class="body">assert done</text>
+  <text x="770" y="138" text-anchor="middle" class="body">one-cycle pulse</text>
+
+  <!-- IDLE -> RUN -->
+  <path class="edge" d="M220,115 L360,115"/>
+  <text x="290" y="105" text-anchor="middle" class="label">start</text>
+
+  <!-- RUN -> FINISH -->
+  <path class="edge" d="M540,115 L680,115"/>
+  <text x="610" y="103" text-anchor="middle" class="label">all work assigned,</text>
+  <text x="610" y="118" text-anchor="middle" class="label">all cores idle</text>
+
+  <!-- reset -> IDLE -->
+  <path class="edge" d="M0,115 L38,115"/>
+  <text x="4" y="103" class="label">reset</text>
+
+  <!-- RUN per-cycle behavior box -->
+  <rect class="noteBox" x="180" y="220" width="440" height="200" rx="10"/>
+  <text x="210" y="248" class="title">RUN state per-cycle behavior</text>
+  <text x="210" y="276" class="body">1. Clear <tspan class="code">core_start</tspan> at the start of each cycle.</text>
+  <text x="210" y="300" class="body">2. If handshake fires: drop valid, pulse start,</text>
+  <text x="222" y="318" class="body">mark core busy.</text>
+  <text x="210" y="342" class="body">3. If <tspan class="code">core_done[i] &amp;&amp; !handshake[i]</tspan>, mark core free.</text>
+  <text x="210" y="366" class="body">4. Assign the next chunk to the lowest-index free core.</text>
+  <text x="210" y="390" class="body">5. Assign at most one core per cycle;</text>
+  <text x="222" y="408" class="body"><tspan class="code">next_thread_id</tspan> updates once per cycle.</text>
+
+  <!-- Bug fix box -->
+  <rect class="fixBox" x="660" y="260" width="220" height="120" rx="10"/>
+  <text x="686" y="286" class="fixTitle">Bug fix</text>
+  <text x="686" y="310" class="fixBody">Same-cycle done and</text>
+  <text x="686" y="328" class="fixBody">handshake used to keep</text>
+  <text x="686" y="346" class="fixBody">the core marked busy</text>
+  <text x="686" y="364" class="fixBody">forever &mdash; fixed by (3) above.</text>
+
+  <!-- FINISH -> note box (down then to fix) -->
+  <path class="edge" d="M770,160 C770,220 770,220 660,300" />
+  <path class="dashed" d="M660,300 L622,320"/>
+
+  <!-- RUN -> note box link -->
+  <path class="edge" d="M450,160 L450,220"/>
+
+  <!-- note box -> IDLE loop back -->
+  <path class="edge" d="M180,320 C60,320 60,160 128,162"/>
+  <text x="70" y="240" class="label" transform="rotate(-90 70 240)">return to IDLE</text>
+</svg>
