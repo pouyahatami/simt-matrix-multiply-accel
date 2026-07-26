@@ -2,7 +2,7 @@
 
 A fixed-function SIMD matrix-multiply accelerator written in SystemVerilog, targeting the Terasic DE1-SoC (Cyclone V). Computes parameterised N×N integer matrix multiplication across multiple hardware cores using a shared-memory arbitration model.
 
-This is the first milestone toward a full SIMT GPU (see [Roadmap](#roadmap)) — it doesn't have an ISA yet, so it's a SIMD accelerator, not a programmable GPU.
+This is the first milestone toward a full SIMT GPU — it doesn't have an ISA yet, so it's a SIMD accelerator, not a programmable GPU.
 
 No vendor IP — all RTL hand-written and verified in ModelSim ASE.
 
@@ -17,8 +17,6 @@ No vendor IP — all RTL hand-written and verified in ModelSim ASE.
 - [Scheduler](#scheduler)
 - [Arbiters](#arbiters)
 - [Hardware Verification](#hardware-verification)
-- [Running Simulations](#running-simulations)
-- [Roadmap](#roadmap)
 
 ---
 
@@ -91,49 +89,3 @@ the DE1-SoC using the Quartus In-System Memory Content Editor to read back
 
 Each boxed RAM word maps to one expected `C` value from the 4&times;4
 matrix multiply; all 16 values matched.
-
----
-
-## Running Simulations
-
-Each module has a `run.do` script. Run from a ModelSim Tcl console:
-
-```tcl
-do "tb/scheduler/run.do"
-do "tb/core/run.do"
-do "tb/fma/run.do"
-do "tb/arbiter/run_read.do"
-do "tb/arbiter/run_write.do"
-```
-
-Full system test:
-
-```tcl
-do "tb/Top/run.do"
-```
-
-All scripts compile from `rtl/` directly — run from any directory.
-
----
-
-## Roadmap
-
-### Done
-
-- [x] 4-core shared-memory architecture with round-robin arbitration
-- [x] Parameterised `BRAM_LATENCY` (simulation=1, hardware=2)
-- [x] Dispatcher race condition fixes
-- [x] Contention instrumentation (`stall_cycles`, `grant_count`)
-- [x] Unit testbenches for all modules
-- [x] DE1-SoC Quartus synthesis project
-- [x] HEX display shows **DONE** on completion
-
-### Next Steps
-
-- [ ] Define a minimal ISA (load/store/FMA/branch)
-- [ ] Replace fixed-function thread/scheduler with a programmable scalar core
-- [ ] Extend to true SIMT (shared PC, per-thread register file, active mask)
-- [ ] Re-attach SIMT datapath to existing arbiters
-- [ ] Hand-assemble and run a matmul kernel on the programmable core
-- [ ] SVA assertions on arbiters and dispatcher
-- [ ] UVM environment for the SIMT core
