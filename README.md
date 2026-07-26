@@ -1,8 +1,8 @@
 # SIMT Matrix Multiply Accel
 
-A fixed-function SIMD matrix-multiply accelerator written in SystemVerilog, targeting the Terasic DE1-SoC (Cyclone V). Computes parameterised N×N integer matrix multiplication across multiple hardware cores using a shared-memory arbitration model.
+A fixed-function SIMT accelerator written in SystemVerilog, targeting the Terasic DE1-SoC (Cyclone V). Computes parameterised N×N integer matrix multiplication across multiple hardware cores using a shared-memory arbitration model.
 
-This is the first milestone toward a full SIMT GPU — it doesn't have an ISA yet, so it's a SIMD accelerator, not a programmable GPU.
+This is the first milestone toward a full SIMT GPU — it doesn't have an ISA yet, so it's a fixed-function accelerator, not a programmable GPU.
 
 No vendor IP — all RTL hand-written and verified in ModelSim ASE.
 
