@@ -1,8 +1,10 @@
-# DE1-SoC GPU
+# SIMT Matrix Multiply Accel
 
-A SIMT-style GPU written in SystemVerilog, targeting the Terasic DE1-SoC (Cyclone V). Computes parameterised N×N integer matrix multiplication across multiple hardware cores using a shared-memory arbitration model.
+A fixed-function SIMD matrix-multiply accelerator written in SystemVerilog, targeting the Terasic DE1-SoC (Cyclone V). Computes parameterised N×N integer matrix multiplication across multiple hardware cores using a shared-memory arbitration model.
 
-No vendor GPU IP — all RTL hand-written and verified in ModelSim ASE.
+This is the first milestone toward a full SIMT GPU (see [Roadmap](#roadmap)) — it doesn't have an ISA yet, so it's a SIMD accelerator, not a programmable GPU.
+
+No vendor IP — all RTL hand-written and verified in ModelSim ASE.
 
 **`NUM_CORES = 4` · `THREADS_PER_CORE = 2` · `N = 4` (parameterised)**
 
@@ -25,7 +27,7 @@ No vendor GPU IP — all RTL hand-written and verified in ModelSim ASE.
 
 All four cores share one physical read port per input matrix and one write port for the output matrix, each guarded by a round-robin arbiter. Cores that lose arbitration stall and re-request next cycle — contention is instrumented, not hidden.
 
-The two Quartus memory IPs (`matrix_ab`, `matrix_c`) are instantiated outside `gpu_top` in the board wrapper `de1soc_top.sv`, keeping the GPU logic vendor-agnostic.
+The two Quartus memory IPs (`matrix_ab`, `matrix_c`) are instantiated outside `gpu_top` in the board wrapper `de1soc_top.sv`, keeping the accelerator logic vendor-agnostic.
 
 ---
 
@@ -83,17 +85,17 @@ The two Quartus memory IPs (`matrix_ab`, `matrix_c`) are instantiated outside `g
 Each module has a `run.do` script. Run from a ModelSim Tcl console:
 
 ```tcl
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/scheduler/run.do"
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/core/run.do"
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/fma/run.do"
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/arbiter/run_read.do"
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/arbiter/run_write.do"
+do "tb/scheduler/run.do"
+do "tb/core/run.do"
+do "tb/fma/run.do"
+do "tb/arbiter/run_read.do"
+do "tb/arbiter/run_write.do"
 ```
 
 Full system test:
 
 ```tcl
-do "C:/Users/User/Desktop/Year 3/DE1-SoC-GPU/tb/Top/run.do"
+do "tb/Top/run.do"
 ```
 
 All scripts compile from `rtl/` directly — run from any directory.
